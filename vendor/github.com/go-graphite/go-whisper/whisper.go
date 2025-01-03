@@ -1103,7 +1103,7 @@ func (whisper *Whisper) getBaseInterval(archive *archiveInfo) int {
 
 	baseInterval, err := whisper.readInt(archive.Offset())
 	if err != nil {
-		panic(fmt.Sprintf("Failed to read baseInterval: %s, archive: %#v", err.Error(), archive))
+		panic(fmt.Sprintf("Failed to read baseInterval: %s", err.Error()))
 	}
 	return baseInterval
 }
