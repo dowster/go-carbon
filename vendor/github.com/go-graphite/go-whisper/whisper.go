@@ -1103,7 +1103,7 @@ func (whisper *Whisper) getBaseInterval(archive *archiveInfo) int {
 
 	baseInterval, err := whisper.readInt(archive.Offset())
 	if err != nil {
-		panic(fmt.Sprintf("Failed to read baseInterval: %s", err.Error()))
+		panic(fmt.Sprintf("Failed to read baseInterval: %s, path: %+v", err.Error(), archive))
 	}
 	return baseInterval
 }
@@ -1285,6 +1285,13 @@ func (whisper *Whisper) FetchByAggregation(fromTime, untilTime int, spec *MixAgg
 }
 
 func (whisper *Whisper) fetchFromArchive(archive *archiveInfo, fromTime, untilTime int) (timeSeries *TimeSeries, err error) {
+	// recover panics and return as error
+	defer func() {
+		if e := recover(); e != nil {
+			err = errors.New(e.(string))
+		}
+	}()
+
 	fromInterval := archive.Interval(fromTime)
 	untilInterval := archive.Interval(untilTime)
 
