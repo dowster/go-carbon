@@ -104,7 +104,7 @@ func (listener *CarbonserverListener) fetchFromDisk(metric string, fromTime, unt
 	points, err := w.Fetch(int(fromTime), int(untilTime))
 	w.Close()
 	if err != nil {
-		logger.Warn("failed to fetch points", zap.Error(err))
+		logger.Warn("failed to fetch points", zap.Error(err), zap.String("path", path))
 		return nil, errors.New("failed to fetch points")
 	}
 
