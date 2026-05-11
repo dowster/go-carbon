@@ -1879,8 +1879,9 @@ func (ti *trieIndex) generateTrieMetrics(metricName string, node *trieNode, thro
 
 	// Note: Timestamp for each points.Points are set by collector send logics
 	meta := node.meta.(*dirMeta)
-	quota := meta.quota.Load().(*Quota)
-	if quota.Namespaces > 0 {
+	quotaVal := meta.quota.Load()
+	quota, _ := quotaVal.(*Quota)
+	if quota != nil && quota.Namespaces > 0 {
 		ti.qauMetrics = append(
 			ti.qauMetrics,
 			points.Points{
@@ -1897,7 +1898,7 @@ func (ti *trieIndex) generateTrieMetrics(metricName string, node *trieNode, thro
 			},
 		)
 	}
-	if quota.Metrics > 0 {
+	if quota != nil && quota.Metrics > 0 {
 		ti.qauMetrics = append(
 			ti.qauMetrics, points.Points{
 				Metric: fmt.Sprintf("quota.metrics.%s", metricName),
@@ -1913,7 +1914,7 @@ func (ti *trieIndex) generateTrieMetrics(metricName string, node *trieNode, thro
 			},
 		)
 	}
-	if quota.DataPoints > 0 {
+	if quota != nil && quota.DataPoints > 0 {
 		ti.qauMetrics = append(
 			ti.qauMetrics,
 			points.Points{
@@ -1930,7 +1931,7 @@ func (ti *trieIndex) generateTrieMetrics(metricName string, node *trieNode, thro
 			},
 		)
 	}
-	if quota.LogicalSize > 0 {
+	if quota != nil && quota.LogicalSize > 0 {
 		ti.qauMetrics = append(
 			ti.qauMetrics,
 			points.Points{
@@ -1947,7 +1948,7 @@ func (ti *trieIndex) generateTrieMetrics(metricName string, node *trieNode, thro
 			},
 		)
 	}
-	if quota.PhysicalSize > 0 {
+	if quota != nil && quota.PhysicalSize > 0 {
 		ti.qauMetrics = append(
 			ti.qauMetrics,
 			points.Points{
@@ -1964,7 +1965,7 @@ func (ti *trieIndex) generateTrieMetrics(metricName string, node *trieNode, thro
 			},
 		)
 	}
-	if quota.Throughput > 0 {
+	if quota != nil && quota.Throughput > 0 {
 		ti.qauMetrics = append(
 			ti.qauMetrics, points.Points{
 				Metric: fmt.Sprintf("quota.throughput.%s", metricName),
