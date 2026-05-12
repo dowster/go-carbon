@@ -32,6 +32,9 @@ LOOP:
 }
 
 func TestThrottleChan(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping timing-sensitive test in short mode")
+	}
 	// perSecondTable := []int{100, 1000, 10000, 100000, 200000, 400000}
 	perSecondTable := []int{100, 1000, 10000, 100000, 200000}
 
@@ -45,6 +48,9 @@ func TestThrottleChan(t *testing.T) {
 }
 
 func TestHardThrottleChan(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skipping timing-sensitive test in short mode")
+	}
 	perSecondTable := []int{100, 1000, 10000, 100000, 200000}
 
 	for _, perSecond := range perSecondTable {

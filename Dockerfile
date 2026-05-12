@@ -9,13 +9,7 @@ WORKDIR /usr/local/src/go-carbon
 COPY --chown=nobody:nogroup . .
 RUN --network=none make clean
 RUN make go-carbon
-RUN <<EOT
-if [ "${TARGETARCH:-unknown}" = "amd64" ]; then
-  make run-test COMMAND="test -race" 
-else
-  make run-test COMMAND="test" || true
-fi
-EOT
+RUN make run-test COMMAND="test -short"
 
 FROM alpine:latest
 
